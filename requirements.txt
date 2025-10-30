@@ -1,0 +1,12 @@
+gradio>=4.0.0
+crewai>=0.51.0
+crewai-tools>=0.4.0
+duckduckgo-search>=6.1.0
+sentence-transformers
+faiss-cpu
+pymupdf
+openpyxl
+pandas
+requests
+beautifulsoup4
+langchain-ollama

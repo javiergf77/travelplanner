@@ -1,0 +1,36 @@
+{
+  "personal_info": {
+    "full_name": "Javier Guillermo",
+    "email": "javier.guillermo@lenovo.com",
+    "phone": "+1-555-0123",
+    "employee_id": "EMP12345",
+    "department": "Engineering"
+  },
+  "travel_preferences": {
+    "seat_preference": "Aisle",
+    "meal_preference": "No preference",
+    "loyalty_programs": {
+      "airlines": ["American Airlines AAdvantage: 0A608F6", "Delta SkyMiles: DL123456789", "United MileagePlus: UN987654321"],
+      "hotels": ["Marriott Bonvoy: MB555666777"]
+    }
+  },
+  "payment_info": {
+    "note": "ENCRYPTED IN PRODUCTION - This is demo data only",
+    "card_type": "Corporate Amex",
+    "card_last4": "1234",
+    "billing_address": {
+      "street": "123 Business Ave",
+      "city": "Chicago",
+      "state": "IL",
+      "zip": "60601",
+      "country": "USA"
+    }
+  },
+  "passport_info": {
+    "note": "ENCRYPTED IN PRODUCTION - This is demo data only",
+    "passport_number": "XXX123456",
+    "expiry_date": "2030-12-31",
+    "nationality": "USA"
+  }
+}
+

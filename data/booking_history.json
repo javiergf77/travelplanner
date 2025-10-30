@@ -1,0 +1,41 @@
+[
+  {
+    "confirmation_code": "CONF20251030121614",
+    "timestamp": "2025-10-30T12:16:14.237058",
+    "details": {
+      "flight_details": "\nAirline: United\nFlight: UA103\nDeparture: 2025-11-05 18:04\nArrival: 2025-11-05 20:04\nPassenger: Javier Guillermo\nPNR: PNR121614\n",
+      "hotel_details": "\nHotel: Hilton Raleigh\nCheck-in: 2025-11-05\nCheck-out: 2025-11-10\nNights: 5\nGuest: Javier Guillermo\nConfirmation: RES121614\n",
+      "flight_cost": 121,
+      "hotel_cost": 755,
+      "total_cost": 876,
+      "payment_method": "Corporate Amex ending in ****",
+      "email": "javier.guillermo@lenovo.com"
+    }
+  },
+  {
+    "confirmation_code": "CONF20251030122310",
+    "timestamp": "2025-10-30T12:23:10.041569",
+    "details": {
+      "flight_details": "\nAirline: American\nFlight: AA465\nDeparture: 2025-11-05 08:47\nArrival: 2025-11-05 10:58\nPassenger: Javier Guillermo\nPNR: PNR122310\n",
+      "hotel_details": "\nHotel: Hilton Raleigh\nCheck-in: 2025-11-05\nCheck-out: 2025-11-010\nNights: 3\nGuest: Javier Guillermo\nConfirmation: RES122310\n",
+      "flight_cost": 117,
+      "hotel_cost": 756,
+      "total_cost": 873,
+      "payment_method": "Corporate Amex ending in ****",
+      "email": "javier.guillermo@lenovo.com"
+    }
+  },
+  {
+    "confirmation_code": "CONF20251030122949",
+    "timestamp": "2025-10-30T12:29:49.702747",
+    "details": {
+      "flight_details": "\nAirline: JetBlue\nFlight: B6333\nDeparture: 2025-11-05 08:02\nArrival: 2025-11-05 10:53\nPassenger: Javier Guillermo\nPNR: PNR122949\n",
+      "hotel_details": "\nHotel: Hilton Raleigh\nCheck-in: 2025-11-05\nCheck-out: 2025-11-11\nNights: 6\nGuest: Javier Guillermo\nConfirmation: RES122949\n",
+      "flight_cost": 418,
+      "hotel_cost": 756,
+      "total_cost": 1174,
+      "payment_method": "Corporate Amex ending in ****",
+      "email": "javier.guillermo@lenovo.com"
+    }
+  }
+]
