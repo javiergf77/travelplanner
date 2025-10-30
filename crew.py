@@ -239,10 +239,10 @@ def run_travel_crew_yaml(trip_params: dict, mode: str = "local") -> str:
         print(f"\n✅ CrewAI completed successfully!")
         print(f"📊 Output length: {len(output)} characters")
         
-        # Fallback if agent returns tool actions
-        if "Action:" in output and len(output) < 1000:
-            print("⚠️ Agent returned tool actions instead of narrative response.")
-            print("⚠️ Falling back to Simple Mode for proper formatting...")
+        # Only fall back if output is clearly broken (very short or just tool syntax)
+        if len(output) < 500 or (output.count("Action:") > 3):
+            print("⚠️ CrewAI output appears incomplete.")
+            print("⚠️ Falling back to Simple Mode...")
             from crew_setup_new import run_simple_mode
             return run_simple_mode(trip_params)
         

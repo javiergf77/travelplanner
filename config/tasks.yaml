@@ -45,65 +45,63 @@ check_policy:
 
 research_destination:
   description: >
-    Research {destination} for travel dates {depart_date} to {return_date}.
+    Use the research_destination_tool to get information about {destination} 
+    for travel dates {depart_date} to {return_date}.
     
-    Provide:
-    - Weather forecast
-    - Travel warnings/advisories
-    - Top 5 business-friendly restaurants
-    - Things to do (evening/downtime activities)
-    - Ground transportation tips
+    Simply call the tool with: destination={destination}, travel_date={depart_date}, trip_purpose={purpose}
+    
+    The tool will return weather, restaurants, activities, and travel warnings.
+    Return the tool output directly - do not reformat or modify it.
   expected_output: >
-    Comprehensive destination guide with weather, dining, activities, 
-    safety info, and transportation recommendations
+    The complete output from research_destination_tool including weather forecast, 
+    top 5 restaurants, things to do, and travel warnings. Return exactly as provided by the tool.
   agent: research_specialist
 
 final_recommendation:
   description: >
-    Using the information from previous tasks, create a comprehensive travel plan 
-    for the trip from {origin} to {destination}.
+    Create a comprehensive travel plan from {origin} to {destination} using ACTUAL data from previous tasks.
     
-    REQUIRED FORMAT - You MUST include ALL sections below:
+    CRITICAL: Use real flight numbers, hotel names, prices from the tool results. DO NOT use placeholders like XXX or [Airline].
     
-    1. **Flight Options:** List 3 options with departure/arrival times and prices
+    Format your response with these sections using icons:
     
-    2. **Hotel Options:** List 3 options with nightly rates and total costs
+    ## 🎯 Recommended Travel Packages
     
-    3. **Rental Car Options:** MANDATORY - List ALL 3 options (Hertz, Enterprise, National) with daily rates and total costs.
-       DO NOT show just one option - you MUST include all three companies in a comparison chart.
+    **Complete packages with flights, hotels, and rental cars:**
     
-    4. **Total Package Cost:** MANDATORY TABLE FORMAT (use markdown table):
+    Create a compact table with 3 packages. Use this format:
     
-    | Option | Flight | Hotel | Rental Car | Total |
+    | Package | Flight | Hotel | Car | **Total** |
     | --- | --- | --- | --- | --- |
-    | **Package 1:** [Airline] + [Hotel] + [Car Co.] | $XXX | $XXX | $XXX | $XXX |
-    | **Package 2:** [Airline] + [Hotel] + [Car Co.] | $XXX | $XXX | $XXX | $XXX |
-    | **Package 3:** [Airline] + [Hotel] + [Car Co.] | $XXX | $XXX | $XXX | $XXX |
     
-    5. **Policy Compliance:** Summary of any issues or approvals needed
+    Keep it simple:
+    - Package column: "Package 1:<br>United + Courtyard + Hertz" (use <br> for line break)
+    - Flight column: "$450" (just the number)
+    - Hotel column: "$525" (just the number)
+    - Car column: "$195" (just the number, shortened header saves space)
+    - Total column: "**$1,170**" (bold, has more room now)
     
-    6. **Destination Guide:** Brief weather, dining, and activity highlights
+    ### Package Details:
     
-    7. **Next Steps:** Clear booking instructions
+    For each package, include:
+    - ✈️ **Flight:** Use actual airline, flight number, and price from tools
+    - 🏨 **Hotel:** Use actual hotel name, nightly rate, total cost from tools
+    - 🚗 **Rental Car:** Use actual company name, vehicle type, daily rate from tools
+    - ⭐ **Matches:** List any that match travel history preferences
     
-    CRITICAL: The table in section 4 is MANDATORY. Always include it with exact pricing for all components.
-    Use markdown formatting with headers, bullet points, and emphasis.
-    Do NOT just return tool actions - provide the complete formatted response.
+    Also include these sections with data from previous tasks:
+    - ## ✈️ Flight Options (show 3-5 flights in a table)
+    - ## 🏨 Hotel Options (show 3-5 hotels in a table)
+    - ## 🚗 Rental Car Options (show all 3: Hertz, Enterprise, National)
+    - ## 🛡️ Policy Compliance (status from policy check)
+    - ## 🌤️ Weather Forecast (from research tool)
+    - ## 🍽️ Top 5 Restaurants (from research tool)
+    - ## 📍 Things to Do (from research tool)
+    - ## 📋 Booking Steps
   expected_output: >
-    A complete, formatted travel plan in markdown with:
-    - Clear headers for each section
-    - 3 specific flight options with all details
-    - 3 specific hotel options with all details
-    - ALL 3 rental car options (Hertz, Enterprise, National) - DO NOT show just one company
-    - MANDATORY: Markdown table showing Total Package Cost for all 3 combinations (flight + hotel + car)
-    - Policy compliance summary (ensure car rentals are under $75/day)
-    - Destination highlights
-    - Action items for booking
-    
-    CRITICAL: You must show a comparison chart with ALL THREE rental car companies (Hertz, Enterprise, National).
-    Do not show only the preferred option - the user needs to compare all three.
-    The table format is critical for user decision-making.
-    This should be a final, polished response ready for the traveler to read.
+    A complete travel plan with real data from the tools. Use icons (✈️, 🏨, 🚗, 🎯, ⭐).
+    Include package comparison table with ACTUAL prices, airlines, hotels, and rental companies.
+    NO placeholders - all data must be real from tool results.
   agent: travel_planner
   context:
     - search_options

@@ -1,4 +1,4 @@
-# 🧭 AI Travel Booker - Corporate Edition
+# 🧭 AI Travel Booker - Corporate Edition - Made by the fellowship of the LLM
 
 **An intelligent corporate travel planning system powered by local AI agents**
 
@@ -8,12 +8,13 @@
 
 ## 🎯 Executive Summary
 
-This application showcases how **Agentic AI** can revolutionize corporate travel booking by combining multiple AI agents that collaborate to create personalized, policy-compliant travel plans. Unlike traditional booking systems, our AI agents **learn** from travel history, **understand** company policies, and **reason** about the best options for each traveler.
+This application showcases how **Agentic AI** can revolutionize corporate travel booking by combining multiple AI agents (in this example using the crew.ai framework) that collaborate to create personalized, policy-compliant travel plans. Unlike traditional booking systems, our AI agents **learn** from travel history, **understand** company policies, and **reason** about the best options for each traveler. In traditional booking systems like American corporate travel it can take an average of around 20 minutes to complete a reservation, this application will reduce the time to 1-2 minutes.
 
 ### Key Innovation: Local-First AI
 
 All AI processing happens **locally** using Ollama - your data never leaves your infrastructure. This means:
 - ✅ **Zero data leakage** - Sensitive travel and payment data stays on-premises
+- ✅ **Local LLM brains** - All decision and "brain" run locally on the device
 - ✅ **Cost-effective** - No per-token API charges
 - ✅ **Compliant** - Meets enterprise security and compliance requirements
 - ✅ **Scalable** - Run on your own hardware, scale as needed
@@ -50,7 +51,7 @@ Unlike traditional AI that just answers questions, **Agentic AI** uses autonomou
 - 🛠️ Use **tools** to accomplish tasks
 - 🤝 **Collaborate** with other agents
 - 🧠 **Reason** about complex problems
-- 🔄 **Adapt** based on results
+- 🔄 **Adapt** based on results and company travel policy 
 
 ### Our AI Agents
 
@@ -122,8 +123,8 @@ Unlike traditional AI that just answers questions, **Agentic AI** uses autonomou
 - Ranks options by preference match and value
 
 **Intelligence**:
-- "This traveler consistently books Delta flights and Marriott hotels"
-- "Budget allows for premium economy on flights over 4 hours"
+- "This traveler consistently books American Airlines and Marriott hotels (preferred travel profile options)"
+- "Budget allows for premium economy on flights over 4 hours" 
 - "Prefers morning departures and downtown locations"
 
 #### 2. 🛡️ Policy Compliance Officer
@@ -717,7 +718,9 @@ python app_gradio_enhanced.py
 
 <div align="center">
 
-**Built with ❤️ to showcase the potential of Agentic AI in enterprise applications**
+**Ash nazg durbatulûk, ash nazg gimbatul, ash nazg thrakatulûk, agh burzum-ishi krimpatul**
+**One Ring to rule them all, One Ring to find them, One Ring to bring them all, and in the darkness bind them
+In the Land of Mordor where the Shadows lie.**
 
 ⭐ Star this repo if you find it useful!
 

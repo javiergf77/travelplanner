@@ -37,5 +37,57 @@
       "payment_method": "Corporate Amex ending in ****",
       "email": "javier.guillermo@lenovo.com"
     }
+  },
+  {
+    "confirmation_code": "CONF20251030143312",
+    "timestamp": "2025-10-30T14:33:12.902700",
+    "details": {
+      "flight_details": "\nAirline: JetBlue\nFlight: B6321\nDeparture: 2025-11-05 13:00\nArrival: 2025-11-05 15:11\nPassenger: Javier Guillermo\nPNR: PNR143312\n",
+      "hotel_details": "\nHotel: Courtyard by Marriott Raleigh\nCheck-in: 2025-11-05\nCheck-out: 2025-11-11\nNights: 6\nGuest: Javier Guillermo\nConfirmation: RES143312\n",
+      "flight_cost": 412,
+      "hotel_cost": 1026,
+      "total_cost": 1438,
+      "payment_method": "Corporate Amex ending in ****",
+      "email": "javier.guillermo@lenovo.com"
+    }
+  },
+  {
+    "confirmation_code": "CONF20251030145105",
+    "timestamp": "2025-10-30T14:51:05.270712",
+    "details": {
+      "flight_details": "\nAirline: JetBlue\nFlight: B6738\nDeparture: 2025-11-05 06:31\nArrival: 2025-11-05 08:05\nPassenger: Javier Guillermo\nPNR: PNR145105\n",
+      "hotel_details": "\nHotel: Courtyard by Marriott Raleigh\nCheck-in: 2025-11-05\nCheck-out: 2025-11-08\nNights: 3\nGuest: Javier Guillermo\nConfirmation: RES145105\n",
+      "flight_cost": 417,
+      "hotel_cost": 504,
+      "total_cost": 921,
+      "payment_method": "Corporate Amex ending in ****",
+      "email": "javier.guillermo@lenovo.com"
+    }
+  },
+  {
+    "confirmation_code": "CONF20251030150156",
+    "timestamp": "2025-10-30T15:01:56.361293",
+    "details": {
+      "flight_details": "\nAirline: Southwest\nFlight: WN359\nDeparture: 2025-11-05 20:26\nArrival: 2025-11-05 22:05\nPassenger: Javier Guillermo\nPNR: PNR150156\n",
+      "hotel_details": "\nHotel: Courtyard by Marriott Raleigh\nCheck-in: 2025-11-05\nCheck-out: 2025-11-11\nNights: 6\nGuest: Javier Guillermo\nConfirmation: RES150156\n",
+      "flight_cost": 414,
+      "hotel_cost": 1050,
+      "total_cost": 1464,
+      "payment_method": "Corporate Amex ending in ****",
+      "email": "javier.guillermo@lenovo.com"
+    }
+  },
+  {
+    "confirmation_code": "CONF20251030155822",
+    "timestamp": "2025-10-30T15:58:22.475763",
+    "details": {
+      "flight_details": "\nAirline: Southwest\nFlight: WN763\nDeparture: 2025-11-05 13:25\nArrival: 2025-11-05 15:51\nPassenger: Javier Guillermo\nPNR: PNR155822\n",
+      "hotel_details": "\nHotel: Courtyard by Marriott Raleigh\nCheck-in: 2025-11-05\nCheck-out: 2025-11-11\nNights: 6\nGuest: Javier Guillermo\nConfirmation: RES155822\n",
+      "flight_cost": 405,
+      "hotel_cost": 1068,
+      "total_cost": 1473,
+      "payment_method": "Corporate Amex ending in ****",
+      "email": "javier.guillermo@lenovo.com"
+    }
   }
 ]

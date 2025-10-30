@@ -145,15 +145,20 @@ def create_travel_planner_agent(llm) -> Agent:
     """
     return Agent(
         role="Travel Planning Coordinator",
-        goal="Create comprehensive, well-formatted travel plans with specific recommendations",
+        goal="Create comprehensive, well-formatted travel plans using REAL data from tools",
         backstory="""You are an expert travel coordinator with 15 years of experience 
         in corporate travel management. You excel at understanding traveler preferences, 
         finding the best options within budget, and ensuring policy compliance.
         
-        IMPORTANT: When presenting final recommendations, you provide detailed, 
-        well-formatted responses with specific flight and hotel options, prices, 
-        and clear explanations. You NEVER just list tool actions - you always 
-        synthesize information into a complete narrative travel plan.""",
+        CRITICAL RULES:
+        1. Use ACTUAL data from tools - real airline names, flight numbers, hotel names, prices
+        2. NEVER use placeholders like XXX, [Airline], [Hotel], or [Model]
+        3. Extract specific information from tool results (e.g., "United UA123 - $450")
+        4. Create formatted responses with icons (✈️, 🏨, 🚗, 🎯, ⭐)
+        5. Always calculate and show total costs (flight + hotel + car)
+        
+        You NEVER just list tool actions - you synthesize information into complete, 
+        polished travel plans with all real data filled in.""",
         tools=[
             traveler_preferences_tool,
             flight_search_tool,
@@ -186,19 +191,19 @@ def create_policy_agent(llm) -> Agent:
 
 def create_research_agent(llm) -> Agent:
     """
-    Destination research specialist
+    Destination research specialist - optimized for speed
     """
     return Agent(
         role="Destination Research Specialist",
-        goal="Provide comprehensive destination intelligence and travel recommendations",
-        backstory="""You are a worldly travel researcher who has visited hundreds of 
-        cities. You provide practical, up-to-date information about destinations including 
-        weather, safety, dining, and activities. You focus on information that helps 
-        business travelers make the most of their trips.""",
+        goal="Quickly retrieve destination information using the research tool",
+        backstory="""You are an efficient travel researcher with access to a comprehensive 
+        research tool. You call the destination_research_tool with the destination and dates, 
+        then return its output directly. You work fast and focus on speed.""",
         tools=[destination_research_tool],
         llm=llm,
         verbose=True,
-        allow_delegation=False
+        allow_delegation=False,
+        max_iter=5  # Limit iterations to prevent hanging
     )
 
 
@@ -269,67 +274,66 @@ def create_travel_tasks(agents: dict, trip_params: dict) -> list:
     # Task 3: Destination research
     research_task = Task(
         description=f"""
-        Research {trip_params['destination']} for travel dates {trip_params['depart_date']} 
-        to {trip_params['return_date']}.
+        Use the research_destination_tool to get information about {trip_params['destination']} 
+        for travel dates {trip_params['depart_date']} to {trip_params['return_date']}.
         
-        Provide:
-        - Weather forecast
-        - Travel warnings/advisories
-        - Top 5 business-friendly restaurants
-        - Things to do (evening/downtime activities)
-        - Ground transportation tips
+        Simply call: research_destination_tool(destination="{trip_params['destination']}", 
+        travel_date="{trip_params['depart_date']}", trip_purpose="{trip_params['purpose']}")
+        
+        Return the tool output directly without modification.
         """,
-        expected_output="""Comprehensive destination guide with weather, dining, 
-        activities, safety info, and transportation recommendations""",
+        expected_output="""The complete output from research_destination_tool including weather forecast, 
+        top 5 restaurants, things to do, and travel warnings. Return exactly as provided by the tool.""",
         agent=agents['research']
     )
     
     # Task 4: Final recommendation
     final_task = Task(
         description=f"""
-        Using the information from previous tasks, create a comprehensive travel plan for the trip from {trip_params['origin']} to {trip_params['destination']}.
+        Create a comprehensive travel plan from {trip_params['origin']} to {trip_params['destination']} 
+        using ACTUAL data from previous tasks.
         
-        REQUIRED FORMAT - You MUST include ALL sections below:
+        CRITICAL: Use real flight numbers, hotel names, prices from the tool results. DO NOT use placeholders like XXX or [Airline].
         
-        1. **Flight Options:** List 3 options with departure/arrival times and prices
+        Format your response with these sections using icons:
         
-        2. **Hotel Options:** List 3 options with nightly rates and total costs
+        ## 🎯 Recommended Travel Packages
         
-        3. **Rental Car Options:** MANDATORY - List ALL 3 options (Hertz, Enterprise, National) with daily rates and total costs.
-           You MUST show all three companies in a comparison chart - not just the preferred one.
+        **Complete packages with flights, hotels, and rental cars:**
         
-        4. **Total Package Cost:** MANDATORY TABLE FORMAT (use markdown table):
+        Create a compact table with 3 packages. Use this format:
         
-        | Option | Flight | Hotel | Rental Car | Total |
+        | Package | Flight | Hotel | Car | **Total** |
         | --- | --- | --- | --- | --- |
-        | **Package 1:** [Airline] + [Hotel] + [Car Co.] | $XXX | $XXX | $XXX | $XXX |
-        | **Package 2:** [Airline] + [Hotel] + [Car Co.] | $XXX | $XXX | $XXX | $XXX |
-        | **Package 3:** [Airline] + [Hotel] + [Car Co.] | $XXX | $XXX | $XXX | $XXX |
         
-        5. **Policy Compliance:** Summary of any issues or approvals needed (ensure car rentals are under $75/day)
+        Keep it simple:
+        - Package column: "Package 1:<br>United + Courtyard + Hertz" (use <br> for line break)
+        - Flight column: "$450" (just the number)
+        - Hotel column: "$525" (just the number)
+        - Car column: "$195" (just the number, shortened header saves space)
+        - Total column: "**$1,170**" (bold, has more room now)
         
-        6. **Destination Guide:** Brief weather, dining, and activity highlights
+        ### Package Details:
         
-        7. **Next Steps:** Clear booking instructions
+        For each package, include:
+        - ✈️ **Flight:** Use actual airline, flight number, and price from tools
+        - 🏨 **Hotel:** Use actual hotel name, nightly rate, total cost from tools
+        - 🚗 **Rental Car:** Use actual company name, vehicle type, daily rate from tools
+        - ⭐ **Matches:** List any that match travel history preferences
         
-        CRITICAL: The table in section 4 is MANDATORY. Always include it with exact pricing for all components.
-        Use markdown formatting with headers, bullet points, and emphasis.
-        Do NOT just return tool actions - provide the complete formatted response.
+        Also include these sections with data from previous tasks:
+        - ## ✈️ Flight Options (show 3-5 flights in a table)
+        - ## 🏨 Hotel Options (show 3-5 hotels in a table)
+        - ## 🚗 Rental Car Options (show all 3: Hertz, Enterprise, National)
+        - ## 🛡️ Policy Compliance (status from policy check)
+        - ## 🌤️ Weather Forecast (from research tool)
+        - ## 🍽️ Top 5 Restaurants (from research tool)
+        - ## 📍 Things to Do (from research tool)
+        - ## 📋 Booking Steps
         """,
-        expected_output="""A complete, formatted travel plan in markdown with:
-        - Clear headers for each section
-        - 3 specific flight options with all details
-        - 3 specific hotel options with all details
-        - ALL 3 rental car options (Hertz, Enterprise, National) in a comparison chart - DO NOT show just one
-        - MANDATORY: Markdown table showing Total Package Cost for all 3 combinations (flight + hotel + car)
-        - Policy compliance summary (ensure car rentals are under $75/day)
-        - Destination highlights
-        - Action items for booking
-        
-        CRITICAL: The rental car comparison chart must show ALL THREE companies (Hertz, Enterprise, National).
-        Do not show only the preferred option - the user needs to see all choices.
-        The table format is critical for user decision-making.
-        This should be a final, polished response ready for the traveler to read.""",
+        expected_output="""A complete travel plan with real data from the tools. Use icons (✈️, 🏨, 🚗, 🎯, ⭐).
+        Include package comparison table with ACTUAL prices, airlines, hotels, and rental companies.
+        NO placeholders - all data must be real from tool results.""",
         agent=agents['planner'],
         context=[search_task, policy_task, research_task]
     )
@@ -380,10 +384,10 @@ def run_travel_crew_ai(trip_params: dict, mode: str = "local") -> str:
         print(f"\n✅ CrewAI completed successfully!")
         print(f"📊 Output length: {len(output)} characters")
         
-        # If output is still just a tool action (not a proper narrative), fall back to simple mode
-        if "Action:" in output and len(output) < 1000:
-            print("⚠️ Agent returned tool actions instead of narrative response.")
-            print("⚠️ Falling back to Simple Mode for proper formatting...")
+        # Only fall back if output is clearly broken (very short or just tool syntax)
+        if len(output) < 500 or (output.count("Action:") > 3):
+            print("⚠️ CrewAI output appears incomplete.")
+            print("⚠️ Falling back to Simple Mode...")
             from crew_setup_new import run_simple_mode
             return run_simple_mode(trip_params)
         

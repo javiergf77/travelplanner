@@ -126,14 +126,24 @@ def run_simple_mode(trip_params: dict) -> str:
     
     flights_sorted = sorted(flights, key=flight_priority)
     
-    output.append("**Top 5 Flight Options** (⭐ = preferred | 🎯 = direct flight):\n")
+    output.append("**Top 5 Flight Options** (⭐ = preferred airline | 🎯 = direct flight):\n")
+    
+    # Flight comparison table
+    output.append("| # | Airline | Departure | Arrival | Duration | Stops | Price |")
+    output.append("| --- | --- | --- | --- | --- | --- | --- |")
+    
     for i, f in enumerate(flights_sorted[:5], 1):
-        star = "⭐" if f['airline'] in preferred_airlines else "  "
-        direct = "🎯" if f.get('stops', 0) == 0 else "  "
-        output.append(f"{i}. {star}{direct} **{f['airline']} {f['flight']}** - ${f['price']}")
-        output.append(f"   Depart: {f['depart_time']} | Arrive: {f['arrive_time']}")
-        stops_text = "Direct" if f.get('stops', 0) == 0 else f"{f.get('stops', 0)} stop(s)"
-        output.append(f"   Duration: {f.get('duration', 'N/A')} | {stops_text}\n")
+        star = "⭐" if f['airline'] in preferred_airlines else ""
+        direct = "🎯" if f.get('stops', 0) == 0 else ""
+        indicators = f"{star}{direct}".strip()
+        
+        airline_display = f"{indicators} {f['airline']}" if indicators else f['airline']
+        stops_text = "Direct" if f.get('stops', 0) == 0 else f"{f.get('stops', 0)} stop"
+        
+        output.append(
+            f"| {i} | {airline_display} | {f['depart_time']} | {f['arrive_time']} | "
+            f"{f.get('duration', 'N/A')} | {stops_text} | **${f['price']}** |"
+        )
     
     output.append("\n---\n")
     
@@ -155,14 +165,24 @@ def run_simple_mode(trip_params: dict) -> str:
     
     hotels_sorted = sorted(hotels, key=hotel_priority)
     
-    output.append("**Top 5 Hotel Options** (⭐ = preferred | 💼 = corporate rate):\n")
+    output.append("**Top 5 Hotel Options** (⭐ = preferred brand | 💼 = corporate rate):\n")
+    
+    # Hotel comparison table
+    output.append("| # | Hotel | Stars | Nightly Rate | Nights | Total | Type |")
+    output.append("| --- | --- | --- | --- | --- | --- | --- |")
+    
     for i, h in enumerate(hotels_sorted[:5], 1):
-        star = "⭐" if h['brand'] in preferred_hotels else "  "
-        corp = "💼" if h.get('corporate_rate', False) else "  "
-        rate_note = f" ({h.get('rate_type', '')})" if h.get('rate_type') else ""
-        output.append(f"{i}. {star}{corp} **{h['name']}** - ${h['total_price']} total{rate_note}")
-        output.append(f"   ${h['nightly_rate']}/night × {h['nights']} nights")
-        output.append(f"   {'⭐' * h['stars']} | {h['distance_to_center']} from center\n")
+        star = "⭐" if h['brand'] in preferred_hotels else ""
+        corp = "💼" if h.get('corporate_rate', False) else ""
+        indicators = f"{star}{corp}".strip()
+        
+        hotel_display = f"{indicators} {h['name']}" if indicators else h['name']
+        rate_type = h.get('rate_type', 'Standard')
+        
+        output.append(
+            f"| {i} | {hotel_display} | {'⭐' * h['stars']} | "
+            f"${h['nightly_rate']} | {h['nights']} | **${h['total_price']}** | {rate_type} |"
+        )
     
     output.append("\n---\n")
     
@@ -183,12 +203,21 @@ def run_simple_mode(trip_params: dict) -> str:
     
     cars_sorted = sorted(cars, key=car_priority)
     
-    output.append("**All 3 Rental Car Options** (⭐ = matches your preferences | All under $75/day):\n")
+    output.append("**All 3 Rental Car Options** (⭐ = preferred company | All under $75/day policy):\n")
+    
+    # Rental car comparison table
+    output.append("| # | Company | Vehicle | Daily Rate | Days | Total | Location |")
+    output.append("| --- | --- | --- | --- | --- | --- | --- |")
+    
     for i, c in enumerate(cars_sorted[:3], 1):
-        star = "⭐" if c['company'] in preferred_cars else "  "
-        output.append(f"{i}. {star} **{c['company']}** - ${c['total_cost']} total")
-        output.append(f"   {c['vehicle_class']}: {c['model']}")
-        output.append(f"   ${c['daily_rate']}/day × {c['days']} days | {c['location']}\n")
+        star = "⭐" if c['company'] in preferred_cars else ""
+        company_display = f"{star} {c['company']}" if star else c['company']
+        vehicle_info = f"{c['vehicle_class']}: {c['model']}"
+        
+        output.append(
+            f"| {i} | {company_display} | {vehicle_info} | "
+            f"${c['daily_rate']} | {c['days']} | **${c['total_cost']}** | {c['location']} |"
+        )
     
     output.append("\n---\n")
     
@@ -211,23 +240,34 @@ def run_simple_mode(trip_params: dict) -> str:
     
     output.append("\n---\n")
     
-    # 5. Destination research
-    output.append("## 📍 Destination Intelligence\n")
-    research = research_destination(
-        trip_params['destination'],
-        trip_params['depart_date'],
-        trip_params['purpose']
-    )
-    output.append(research)
+    # 5. Weather Forecast (ALWAYS show prominently)
+    from tools.trip_research import get_weather_forecast, get_restaurants, get_things_to_do, get_travel_warnings
+    
+    output.append("## 🌤️ Weather Forecast\n")
+    weather = get_weather_forecast(trip_params['destination'], trip_params['depart_date'])
+    output.append(weather)
+    output.append("\n---\n")
+    
+    # 6. Top 5 Restaurants (ALWAYS show prominently)
+    output.append("## 🍽️ Top 5 Recommended Restaurants\n")
+    restaurants = get_restaurants(trip_params['destination'])
+    output.append(restaurants)
+    output.append("\n---\n")
+    
+    # 7. Additional Destination Info
+    output.append("## 📍 Additional Destination Information\n")
+    output.append(get_travel_warnings(trip_params['destination']))
+    output.append("\n")
+    output.append(get_things_to_do(trip_params['destination'], trip_params['purpose']))
     
     output.append("\n---\n")
     
-    # 6. Recommended packages
+    # 8. Recommended packages
     output.append("## 🎯 Recommended Travel Packages\n")
     output.append("**Complete packages with flights, hotels, and rental cars:**\n\n")
     
-    # Build package table
-    output.append("| Package | Flight | Hotel | Rental Car | **Total** |")
+    # Build package table - compact format with shortened names
+    output.append("| Package | Flight | Hotel | Car | **Total** |")
     output.append("| --- | --- | --- | --- | --- |")
     
     for i in range(min(3, len(flights_sorted), len(hotels_sorted), len(cars_sorted))):
@@ -236,12 +276,16 @@ def run_simple_mode(trip_params: dict) -> str:
         car = cars_sorted[i]
         total = flight['price'] + hotel['total_price'] + car['total_cost']
         
+        # Shorten names to fit table - full details shown below
+        airline_short = flight['airline'].replace('Airlines', '').replace('Air Lines', '').strip()
+        hotel_short = hotel['name'].split()[0] if len(hotel['name']) > 20 else hotel['name']
+        
         output.append(
-            f"| **Package {i+1}** | "
-            f"{flight['airline']} (${flight['price']}) | "
-            f"{hotel['name']} (${hotel['total_price']}) | "
-            f"{car['company']} (${car['total_cost']}) | "
-            f"**${total:,.2f}** |"
+            f"| **Package {i+1}:**<br>{airline_short} + {hotel_short} + {car['company']} | "
+            f"${flight['price']} | "
+            f"${hotel['total_price']} | "
+            f"${car['total_cost']} | "
+            f"**${total:,.0f}** |"
         )
     
     output.append("\n### Package Details:\n")

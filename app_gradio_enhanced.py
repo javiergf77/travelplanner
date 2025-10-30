@@ -165,8 +165,9 @@ with gr.Blocks(css=GLOBAL_CSS, title="AI Travel Booker") as demo:
             gr.Markdown("**⚙️ AI Settings**")
             
             use_crewai = gr.Checkbox(
-                label="🤖 CrewAI Agents",
-                value=False
+                label="🤖 Use CrewAI Multi-Agent System",
+                value=False,
+                info="Enable to see AI agents collaborate and reason about your request (Requires Ollama running)"
             )
             
             mode = gr.Radio(
@@ -179,7 +180,7 @@ with gr.Blocks(css=GLOBAL_CSS, title="AI Travel Booker") as demo:
             gr.Markdown("""
             **Files:** `travel_history.xlsx`, `profile.json`, `policy.md`
             
-            📖 [README.md](README.md) for setup
+            📖 [README.md](README.md) for full documentation
             """)
     
     def on_send(msg, chat_history, origin, destination, depart_date, return_date, trip_purpose, budget, mode, use_crewai):
